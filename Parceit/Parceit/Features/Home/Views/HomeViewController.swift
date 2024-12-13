@@ -11,21 +11,8 @@ import SnapKit
 final class HomeViewController: UIViewController {
     
     // MARK: - Properties
-    private let topDateView = TopDateView()
-    
-    private let containerView = ContainerView(
-        backgroundColor: .dynamicColor(light: .systemBackground, dark: .secondarySystemBackground),
-        cornerRadius: 10
-    )
-    private let topTitleLabel: UILabel = {
-        let label = UILabel()
-        label.text = "Track your parcel"
-        label.textAlignment = .left
-        label.font = .systemFont(ofSize: 24, weight: .bold)
-        label.textColor = .label
-        
-        return label
-    }()
+    private let searchBarView = SearchBarView()
+    private let emptyView = EmptyView()
     
     // MARK: - Life cycle
     override func viewDidLoad() {
@@ -38,36 +25,32 @@ final class HomeViewController: UIViewController {
         view.backgroundColor = .dynamicColor(light: .secondarySystemBackground, dark: .systemBackground)
         addViews()
         configureLayout()
+        title = "Home"
+        navigationController?.navigationBar.prefersLargeTitles = true
     }
     
     // MARK: - Private Methods
     private func addViews() {
-        view.addSubview(topDateView)
-        view.addSubview(containerView)
-        view.addSubview(topTitleLabel)
+        view.addSubview(searchBarView)
+        view.addSubview(emptyView)
     }
     
     private func configureLayout() {
-        topDateView.snp.makeConstraints {
-            $0.top.equalTo(view.safeAreaLayoutGuide.snp.top)
-            $0.leading.equalTo(view.safeAreaLayoutGuide.snp.leading).offset(16)
-            $0.trailing.equalTo(view.safeAreaLayoutGuide.snp.trailing).inset(16)
-            $0.height.equalTo(80)
+        searchBarView.snp.makeConstraints {
+            $0.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(16)
+            $0.leading.equalTo(view.layoutMarginsGuide.snp.leading)
+            $0.trailing.equalTo(view.layoutMarginsGuide.snp.trailing)
+            $0.height.equalTo(60)
         }
-        containerView.snp.makeConstraints {
-            $0.top.equalTo(topDateView.snp.bottom).offset(16)
-            $0.leading.trailing.equalTo(topDateView)
-            $0.bottom.equalTo(topTitleLabel.snp.bottom).offset(16)
-        }
-        topTitleLabel.snp.makeConstraints {
-            $0.top.equalTo(containerView).offset(16)
-            $0.trailing.leading.equalTo(containerView).offset(16)
-            $0.height.equalTo(24)
+        emptyView.snp.makeConstraints {
+            $0.top.equalTo(searchBarView.snp.bottom).offset(32)
+            $0.leading.trailing.equalTo(view.layoutMarginsGuide)
+            $0.height.equalTo(270)
         }
     }
 
 }
 
 #Preview {
-    HomeViewController()
+    UINavigationController(rootViewController: HomeViewController())
 }
