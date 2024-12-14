@@ -8,7 +8,7 @@
 import UIKit
 import SnapKit
 
-final class HomeViewController: UIViewController {
+final class SearchViewController: UIViewController {
     
     // MARK: - Properties
     private let searchBarView = SearchBarView()
@@ -25,8 +25,8 @@ final class HomeViewController: UIViewController {
         view.backgroundColor = .dynamicColor(light: .secondarySystemBackground, dark: .systemBackground)
         addViews()
         configureLayout()
-        title = "Home"
-        navigationController?.navigationBar.prefersLargeTitles = true
+//        title = "Home"
+//        navigationController?.navigationBar.prefersLargeTitles = true
     }
     
     // MARK: - Private Methods
@@ -51,6 +51,3 @@ final class HomeViewController: UIViewController {
 
 }
 
-#Preview {
-    UINavigationController(rootViewController: HomeViewController())
-}

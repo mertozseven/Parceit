@@ -11,7 +11,7 @@ final class SearchBarView: UIView {
     
     // MARK: - Properties
     private let containerView = ContainerView(
-        backgroundColor: .systemBackground,
+        backgroundColor: .dynamicColor(light: .systemBackground, dark: .secondarySystemBackground),
         cornerRadius: 10
     )
     
