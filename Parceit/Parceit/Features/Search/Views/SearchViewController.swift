@@ -51,7 +51,6 @@ final class SearchViewController: UIViewController {
     private func configureSearchBar() {
         searchBarView.onQRCodeTapped = { [weak self] in
             let scannerVC = ScannerViewController()
-            scannerVC.modalPresentationStyle = .fullScreen
             scannerVC.viewModel.didFindCode = { [weak self] code in
                 self?.searchBarView.configure(with: code)
                 print("Scanned code: \(code)")

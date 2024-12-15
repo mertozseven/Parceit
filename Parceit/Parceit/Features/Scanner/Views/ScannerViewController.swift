@@ -12,6 +12,7 @@ import SnapKit
 
 final class ScannerViewController: UIViewController {
     
+    // MARK: - Properties
     let viewModel = ScannerViewModel()
     private var captureSession: AVCaptureSession?
     private let previewLayer = AVCaptureVideoPreviewLayer()
@@ -21,15 +22,35 @@ final class ScannerViewController: UIViewController {
         view.backgroundColor = UIColor.black.withAlphaComponent(0.5)
         return view
     }()
+
+    private lazy var closeButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setImage(UIImage(systemName: "xmark"), for: .normal)
+        button.tintColor = .white
+        button.addTarget(self, action: #selector(closeTapped), for: .touchUpInside)
+        
+        return button
+    }()
     
     private lazy var flashlightButton: UIButton = {
         let button = UIButton(type: .system)
         button.setImage(UIImage(systemName: "flashlight.off.fill"), for: .normal)
         button.tintColor = .white
         button.addTarget(self, action: #selector(flashlightTapped), for: .touchUpInside)
+        
         return button
     }()
     
+    private lazy var instructionLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Align the QR code within the frame to scan"
+        label.textColor = .white
+        label.textAlignment = .center
+        label.font = .systemFont(ofSize: 16, weight: .medium)
+        return label
+    }()
+    
+    // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
@@ -42,14 +63,29 @@ final class ScannerViewController: UIViewController {
         createScannerOverlay()
     }
     
+    // MARK: - Private Methods
     private func setupUI() {
         view.backgroundColor = .black
         view.layer.addSublayer(previewLayer)
         view.addSubview(scannerOverlay)
         view.addSubview(flashlightButton)
+        view.addSubview(closeButton)
+        view.addSubview(instructionLabel)
         
         scannerOverlay.snp.makeConstraints {
             $0.edges.equalToSuperview()
+        }
+        
+        closeButton.snp.makeConstraints {
+            $0.top.equalTo(view.safeAreaLayoutGuide).offset(16)
+            $0.leading.equalTo(view.layoutMarginsGuide)
+            $0.width.height.equalTo(44)
+        }
+        
+        instructionLabel.snp.makeConstraints {
+            $0.centerX.equalToSuperview()
+            $0.bottom.equalTo(view.snp.centerY).offset(-150)
+            $0.leading.trailing.equalToSuperview().inset(16)
         }
         
         flashlightButton.snp.makeConstraints {
@@ -149,12 +185,17 @@ final class ScannerViewController: UIViewController {
         self.captureSession = session
     }
     
+    // MARK: - Objective Methods
     @objc private func flashlightTapped() {
         viewModel.toggleFlashlight()
         let imageName = flashlightButton.currentImage == UIImage(systemName: "flashlight.off.fill")
             ? "flashlight.on.fill"
             : "flashlight.off.fill"
         flashlightButton.setImage(UIImage(systemName: imageName), for: .normal)
+    }
+
+    @objc private func closeTapped() {
+        dismiss(animated: true)
     }
 }
 
