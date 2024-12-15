@@ -8,7 +8,7 @@
 import UIKit
 import SnapKit
 
-final class HomeViewController: UIViewController {
+final class SearchViewController: UIViewController {
     
     // MARK: - Properties
     private let searchBarView = SearchBarView()
@@ -18,6 +18,7 @@ final class HomeViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureUI()
+        configureSearchBar()
     }
     
     // MARK: - Private Methods
@@ -25,11 +26,9 @@ final class HomeViewController: UIViewController {
         view.backgroundColor = .dynamicColor(light: .secondarySystemBackground, dark: .systemBackground)
         addViews()
         configureLayout()
-        title = "Home"
-        navigationController?.navigationBar.prefersLargeTitles = true
+        title = "Search"
     }
     
-    // MARK: - Private Methods
     private func addViews() {
         view.addSubview(searchBarView)
         view.addSubview(emptyView)
@@ -48,9 +47,15 @@ final class HomeViewController: UIViewController {
             $0.height.equalTo(270)
         }
     }
-
-}
-
-#Preview {
-    UINavigationController(rootViewController: HomeViewController())
+    
+    private func configureSearchBar() {
+        searchBarView.onQRCodeTapped = { [weak self] in
+            let scannerVC = ScannerViewController()
+            scannerVC.viewModel.didFindCode = { [weak self] code in
+                self?.searchBarView.configure(with: code)
+                print("Scanned code: \(code)")
+            }
+            self?.present(scannerVC, animated: true)
+        }
+    }
 }
