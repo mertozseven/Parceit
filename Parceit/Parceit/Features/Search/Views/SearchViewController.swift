@@ -18,6 +18,7 @@ final class SearchViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureUI()
+        configureSearchBar()
     }
     
     // MARK: - Private Methods
@@ -25,11 +26,9 @@ final class SearchViewController: UIViewController {
         view.backgroundColor = .dynamicColor(light: .secondarySystemBackground, dark: .systemBackground)
         addViews()
         configureLayout()
-//        title = "Home"
-//        navigationController?.navigationBar.prefersLargeTitles = true
+        title = "Search"
     }
     
-    // MARK: - Private Methods
     private func addViews() {
         view.addSubview(searchBarView)
         view.addSubview(emptyView)
@@ -48,6 +47,16 @@ final class SearchViewController: UIViewController {
             $0.height.equalTo(270)
         }
     }
-
+    
+    private func configureSearchBar() {
+        searchBarView.onQRCodeTapped = { [weak self] in
+            let scannerVC = ScannerViewController()
+            scannerVC.modalPresentationStyle = .fullScreen
+            scannerVC.viewModel.didFindCode = { [weak self] code in
+                self?.searchBarView.configure(with: code)
+                print("Scanned code: \(code)")
+            }
+            self?.present(scannerVC, animated: true)
+        }
+    }
 }
-
