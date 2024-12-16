@@ -57,6 +57,12 @@ final class EmptyView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // MARK: - Public Methods
+    public func configure(with title: String, body: String) {
+        self.emptyTextTitle.text = title
+        self.emptyText.text = body
+    }
+    
     // MARK: - Private Methods
     private func configureUI() {
         addViews()

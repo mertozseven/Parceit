@@ -7,7 +7,7 @@
 
 import UIKit
 
-class TabBarController: UITabBarController {
+final class TabBarController: UITabBarController {
 
     // MARK: - Lifecycle
     override func viewDidLoad() {
@@ -25,14 +25,14 @@ class TabBarController: UITabBarController {
         let createVC = createNav(
             with: "Create",
             and: UIImage(systemName: "qrcode"),
-            vc: CreateViewController()
+            vc: CreateViewController(viewModel: CreateViewModel())
         )
         let profileVC = createNav(
             with: "Profile",
             and: UIImage(systemName: "person.fill"),
             vc: ProfileViewController()
         )
-        self.setViewControllers([searchVC, createVC, profileVC], animated: true)
+        self.setViewControllers([searchVC, createVC, profileVC], animated: false)
     }
     
     private func createNav(with title: String, and image: UIImage?, vc: UIViewController) -> UINavigationController {

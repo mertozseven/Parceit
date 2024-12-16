@@ -26,7 +26,8 @@ final class SearchViewController: UIViewController {
         view.backgroundColor = .dynamicColor(light: .secondarySystemBackground, dark: .systemBackground)
         addViews()
         configureLayout()
-        title = "Search"
+        view.addDismissKeyboardGesture()
+        emptyView.configure(with: "Previous Searches", body: "Couldn't find previous searches. Please enter your tracking number to the search field above. Your previous searches will appear here")
     }
     
     private func addViews() {

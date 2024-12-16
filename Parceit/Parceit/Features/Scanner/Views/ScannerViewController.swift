@@ -6,38 +6,29 @@
 //
 
 import UIKit
-import AVFoundation
 import VisionKit
 import SnapKit
 
 final class ScannerViewController: UIViewController {
     
     // MARK: - Properties
-    let viewModel = ScannerViewModel()
-    private var captureSession: AVCaptureSession?
-    private let previewLayer = AVCaptureVideoPreviewLayer()
+    var viewModel = ScannerViewModel()
+    private var dataScannerViewController: DataScannerViewController?
+    private var scannerAvailable: Bool {
+        DataScannerViewController.isSupported && DataScannerViewController.isAvailable
+    }
     
     private lazy var scannerOverlay: UIView = {
         let view = UIView()
         view.backgroundColor = UIColor.black.withAlphaComponent(0.5)
         return view
     }()
-
+    
     private lazy var closeButton: UIButton = {
         let button = UIButton(type: .system)
         button.setImage(UIImage(systemName: "xmark"), for: .normal)
         button.tintColor = .white
         button.addTarget(self, action: #selector(closeTapped), for: .touchUpInside)
-        
-        return button
-    }()
-    
-    private lazy var flashlightButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.setImage(UIImage(systemName: "flashlight.off.fill"), for: .normal)
-        button.tintColor = .white
-        button.addTarget(self, action: #selector(flashlightTapped), for: .touchUpInside)
-        
         return button
     }()
     
@@ -54,21 +45,18 @@ final class ScannerViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
-        checkCameraPermission()
+        setupScanner()
     }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        previewLayer.frame = view.bounds
         createScannerOverlay()
     }
     
     // MARK: - Private Methods
     private func setupUI() {
         view.backgroundColor = .black
-        view.layer.addSublayer(previewLayer)
         view.addSubview(scannerOverlay)
-        view.addSubview(flashlightButton)
         view.addSubview(closeButton)
         view.addSubview(instructionLabel)
         
@@ -87,12 +75,45 @@ final class ScannerViewController: UIViewController {
             $0.bottom.equalTo(view.snp.centerY).offset(-150)
             $0.leading.trailing.equalToSuperview().inset(16)
         }
-        
-        flashlightButton.snp.makeConstraints {
-            $0.bottom.equalTo(view.safeAreaLayoutGuide).inset(32)
-            $0.centerX.equalToSuperview()
-            $0.width.height.equalTo(44)
+    
+    }
+    
+    private func setupScanner() {
+        guard scannerAvailable else {
+            print("Scanner not available")
+            return
         }
+        
+        let dataScanner = DataScannerViewController(
+            recognizedDataTypes: [.barcode()],
+            qualityLevel: .balanced,
+            recognizesMultipleItems: false,
+            isHighFrameRateTrackingEnabled: true,
+            isHighlightingEnabled: true
+        )
+        
+        dataScanner.delegate = self
+        
+        let windowSize: CGFloat = 250
+        let screenSize = UIScreen.main.bounds
+        let roi = CGRect(
+            x: (screenSize.width - windowSize) / 2,
+            y: (screenSize.height - windowSize) / 2,
+            width: windowSize,
+            height: windowSize
+        )
+        dataScanner.regionOfInterest = roi
+        
+        addChild(dataScanner)
+        view.insertSubview(dataScanner.view, at: 0)
+        dataScanner.view.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+        dataScanner.didMove(toParent: self)
+        
+        try? dataScanner.startScanning()
+        
+        self.dataScannerViewController = dataScanner
     }
     
     private func createScannerOverlay() {
@@ -137,78 +158,37 @@ final class ScannerViewController: UIViewController {
         view.addSubview(line)
     }
     
-    private func checkCameraPermission() {
-        switch AVCaptureDevice.authorizationStatus(for: .video) {
-        case .authorized:
-            setupCamera()
-        case .notDetermined:
-            AVCaptureDevice.requestAccess(for: .video) { [weak self] granted in
-                if granted {
-                    DispatchQueue.main.async {
-                        self?.setupCamera()
-                    }
-                }
+    // MARK: - Objective Methods
+    @objc private func closeTapped() {
+        dismiss(animated: true)
+    }
+}
+
+// MARK: - DataScannerViewControllerDelegate
+extension ScannerViewController: DataScannerViewControllerDelegate {
+    func dataScanner(_ dataScanner: DataScannerViewController, didTapOn item: RecognizedItem) {
+        switch item {
+        case .barcode(let barcode):
+            if let stringValue = barcode.payloadStringValue {
+                viewModel.didFindCode?(stringValue)
+                dismiss(animated: true)
             }
         default:
             break
         }
     }
     
-    private func setupCamera() {
-        let session = AVCaptureSession()
+    func dataScanner(_ dataScanner: DataScannerViewController, didAdd addedItems: [RecognizedItem], allItems: [RecognizedItem]) {
+        guard let firstItem = addedItems.first else { return }
         
-        guard let videoCaptureDevice = AVCaptureDevice.default(for: .video),
-              let videoInput = try? AVCaptureDeviceInput(device: videoCaptureDevice),
-              session.canAddInput(videoInput) else {
-            return
+        switch firstItem {
+        case .barcode(let barcode):
+            if let stringValue = barcode.payloadStringValue {
+                viewModel.didFindCode?(stringValue)
+                dismiss(animated: true)
+            }
+        default:
+            break
         }
-        
-        session.addInput(videoInput)
-        
-        let metadataOutput = AVCaptureMetadataOutput()
-        
-        if session.canAddOutput(metadataOutput) {
-            session.addOutput(metadataOutput)
-            metadataOutput.setMetadataObjectsDelegate(self, queue: DispatchQueue.main)
-            metadataOutput.metadataObjectTypes = [.qr, .ean13, .ean8, .pdf417]
-        } else {
-            return
-        }
-        
-        previewLayer.session = session
-        previewLayer.videoGravity = .resizeAspectFill
-        
-        DispatchQueue.global(qos: .background).async {
-            session.startRunning()
-        }
-        
-        self.captureSession = session
-    }
-    
-    // MARK: - Objective Methods
-    @objc private func flashlightTapped() {
-        viewModel.toggleFlashlight()
-        let imageName = flashlightButton.currentImage == UIImage(systemName: "flashlight.off.fill")
-            ? "flashlight.on.fill"
-            : "flashlight.off.fill"
-        flashlightButton.setImage(UIImage(systemName: imageName), for: .normal)
-    }
-
-    @objc private func closeTapped() {
-        dismiss(animated: true)
-    }
-}
-
-extension ScannerViewController: AVCaptureMetadataOutputObjectsDelegate {
-    func metadataOutput(_ output: AVCaptureMetadataOutput, didOutput metadataObjects: [AVMetadataObject], from connection: AVCaptureConnection) {
-        guard let metadataObject = metadataObjects.first,
-              let readableObject = metadataObject as? AVMetadataMachineReadableCodeObject,
-              let stringValue = readableObject.stringValue else {
-            return
-        }
-        
-        captureSession?.stopRunning()
-        viewModel.didFindCode?(stringValue)
-        dismiss(animated: true)
     }
 }
