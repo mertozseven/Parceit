@@ -7,12 +7,14 @@
 
 import UIKit
 import SnapKit
+import QRReader
 
 final class SearchViewController: UIViewController {
     
     // MARK: - Properties
     private let searchBarView = SearchBarView()
     private let emptyView = EmptyView()
+    private let qrReader = QRReader()
     
     // MARK: - Life cycle
     override func viewDidLoad() {
@@ -23,6 +25,7 @@ final class SearchViewController: UIViewController {
     
     // MARK: - Private Methods
     private func configureUI() {
+        present(SplashViewController(), animated: true)
         view.backgroundColor = .dynamicColor(light: .secondarySystemBackground, dark: .systemBackground)
         addViews()
         configureLayout()
@@ -51,12 +54,23 @@ final class SearchViewController: UIViewController {
     
     private func configureSearchBar() {
         searchBarView.onQRCodeTapped = { [weak self] in
-            let scannerVC = ScannerViewController()
-            scannerVC.viewModel.didFindCode = { [weak self] code in
-                self?.searchBarView.configure(with: code)
-                print("Scanned code: \(code)")
+            //            let scannerVC = ScannerViewController()
+            //            scannerVC.viewModel.didFindCode = { [weak self] code in
+            //                self?.searchBarView.configure(with: code)
+            //                print("Scanned code: \(code)")
+            //            }
+            //            self?.present(scannerVC, animated: true)
+            if ((self?.qrReader.isScanningAvailable()) != nil) {
+                print("QR Scanner is available!")
+            } else {
+                print("QR Scanner is not supported on this device.")
             }
-            self?.present(scannerVC, animated: true)
+            self!.qrReader.presentScanner(from: self!) { result in
+                print("Scanned code: \(result)")
+            }
+            
         }
+        
     }
 }
+

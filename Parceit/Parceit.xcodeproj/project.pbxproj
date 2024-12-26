@@ -10,6 +10,19 @@
 		964750E92D03286D00A9729C /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 964750E82D03286D00A9729C /* SnapKit */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		969687C92D185CDA00945919 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		964B4C242D02F41700ACE6DF /* Parceit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Parceit.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -24,11 +37,25 @@
 		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
+/* Begin PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
+		969687CA2D185CDA00945919 /* Exceptions for "Parceit" folder in "Embed Frameworks" phase from "Parceit" target */ = {
+			isa = PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet;
+			attributesByRelativePath = {
+				Frameworks/QRReader.xcframework = (CodeSignOnCopy, RemoveHeadersOnCopy, );
+			};
+			buildPhase = 969687C92D185CDA00945919 /* Embed Frameworks */;
+			membershipExceptions = (
+				Frameworks/QRReader.xcframework,
+			);
+		};
+/* End PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		964B4C262D02F41700ACE6DF /* Parceit */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
 				964B4C362D02F41800ACE6DF /* Exceptions for "Parceit" folder in "Parceit" target */,
+				969687CA2D185CDA00945919 /* Exceptions for "Parceit" folder in "Embed Frameworks" phase from "Parceit" target */,
 			);
 			path = Parceit;
 			sourceTree = "<group>";
@@ -73,6 +100,7 @@
 				964B4C202D02F41700ACE6DF /* Sources */,
 				964B4C212D02F41700ACE6DF /* Frameworks */,
 				964B4C222D02F41700ACE6DF /* Resources */,
+				969687C92D185CDA00945919 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);

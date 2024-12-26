@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import AVFoundation
 
 struct ScannerViewModel {
     var didFindCode: ((String) -> Void)?
