@@ -8,6 +8,7 @@
 import UIKit
 import SnapKit
 import QRReader
+import FirebaseAnalytics
 
 final class SearchViewController: UIViewController {
     
@@ -25,12 +26,14 @@ final class SearchViewController: UIViewController {
     
     // MARK: - Private Methods
     private func configureUI() {
-        present(SplashViewController(), animated: true)
         view.backgroundColor = .dynamicColor(light: .secondarySystemBackground, dark: .systemBackground)
         addViews()
         configureLayout()
         view.addDismissKeyboardGesture()
         emptyView.configure(with: "Previous Searches", body: "Couldn't find previous searches. Please enter your tracking number to the search field above. Your previous searches will appear here")
+        Analytics.logEvent("HomeEvents", parameters: [
+            AnalyticsParameterItemID: "Home Screen View"
+        ])
     }
     
     private func addViews() {
@@ -54,12 +57,6 @@ final class SearchViewController: UIViewController {
     
     private func configureSearchBar() {
         searchBarView.onQRCodeTapped = { [weak self] in
-            //            let scannerVC = ScannerViewController()
-            //            scannerVC.viewModel.didFindCode = { [weak self] code in
-            //                self?.searchBarView.configure(with: code)
-            //                print("Scanned code: \(code)")
-            //            }
-            //            self?.present(scannerVC, animated: true)
             if ((self?.qrReader.isScanningAvailable()) != nil) {
                 print("QR Scanner is available!")
             } else {

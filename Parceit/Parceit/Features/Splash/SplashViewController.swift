@@ -8,9 +8,9 @@
 import UIKit
 import SnapKit
 
-class SplashViewController: UIViewController {
+final class SplashViewController: UIViewController {
     
-    // MARK: - UI Components
+    // MARK: - Properties
     private let welcomeLabel: UILabel = {
         let label = UILabel()
         label.text = "Welcome to \nParceit"
@@ -178,7 +178,7 @@ class SplashViewController: UIViewController {
         
         trackingTitle.snp.makeConstraints {
             $0.leading.equalTo(parcelIcon.snp.trailing).offset(16)
-            $0.top.equalTo(welcomeLabel.snp.bottom).offset(28)
+            $0.top.equalTo(welcomeLabel.snp.bottom).offset(16)
             $0.width.equalTo(UIScreen.main.bounds.width)
             $0.height.equalTo(48)
         }
@@ -231,7 +231,7 @@ class SplashViewController: UIViewController {
         }
         
         continueButton.snp.makeConstraints {
-            $0.bottom.equalTo(view.snp.bottom).inset(40)
+            $0.bottom.equalTo(view.snp.bottom).inset(45)
             $0.width.equalTo(UIScreen.main.bounds.width / 2 + 40)
             $0.height.equalTo(48)
             $0.centerX.equalToSuperview()
@@ -242,6 +242,7 @@ class SplashViewController: UIViewController {
         continueButton.addTarget(self, action: #selector(continueButtonAction), for: .touchUpInside)
     }
     
+    // MARK: - Objective Methods
     @objc private func continueButtonAction() {
         dismiss(animated: true)
     }
