@@ -14,6 +14,8 @@
 		966B61902D1D85A3004D51A3 /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = 966B618F2D1D85A3004D51A3 /* FirebaseDatabase */; };
 		966B61952D1D8DC4004D51A3 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 966B61942D1D8DC4004D51A3 /* FirebaseAnalytics */; };
 		967E72C52D2045F300B4E944 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 967E72C42D2045F300B4E944 /* FirebaseFirestore */; };
+		96D4BDC62D2315D00036FB98 /* Crypto in Frameworks */ = {isa = PBXBuildFile; productRef = 96D4BDC52D2315D00036FB98 /* Crypto */; };
+		96D4BDC82D2315D00036FB98 /* _CryptoExtras in Frameworks */ = {isa = PBXBuildFile; productRef = 96D4BDC72D2315D00036FB98 /* _CryptoExtras */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -44,14 +46,14 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
-		969687CA2D185CDA00945919 /* Exceptions for "Parceit" folder in "Embed Frameworks" phase from "Parceit" target */ = {
+		96D4BD0F2D227CA10036FB98 /* Exceptions for "Frameworks" folder in "Embed Frameworks" phase from "Parceit" target */ = {
 			isa = PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet;
 			attributesByRelativePath = {
-				Frameworks/QRReader.xcframework = (CodeSignOnCopy, RemoveHeadersOnCopy, );
+				QRReader.xcframework = (CodeSignOnCopy, RemoveHeadersOnCopy, );
 			};
 			buildPhase = 969687C92D185CDA00945919 /* Embed Frameworks */;
 			membershipExceptions = (
-				Frameworks/QRReader.xcframework,
+				QRReader.xcframework,
 			);
 		};
 /* End PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
@@ -61,9 +63,16 @@
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
 				964B4C362D02F41800ACE6DF /* Exceptions for "Parceit" folder in "Parceit" target */,
-				969687CA2D185CDA00945919 /* Exceptions for "Parceit" folder in "Embed Frameworks" phase from "Parceit" target */,
 			);
 			path = Parceit;
+			sourceTree = "<group>";
+		};
+		96D4BD0C2D227CA10036FB98 /* Frameworks */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				96D4BD0F2D227CA10036FB98 /* Exceptions for "Frameworks" folder in "Embed Frameworks" phase from "Parceit" target */,
+			);
+			path = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -73,8 +82,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				96D4BDC62D2315D00036FB98 /* Crypto in Frameworks */,
 				966B61952D1D8DC4004D51A3 /* FirebaseAnalytics in Frameworks */,
 				966B61902D1D85A3004D51A3 /* FirebaseDatabase in Frameworks */,
+				96D4BDC82D2315D00036FB98 /* _CryptoExtras in Frameworks */,
 				964750E92D03286D00A9729C /* SnapKit in Frameworks */,
 				966B618A2D1D85A3004D51A3 /* FirebaseAuth in Frameworks */,
 				967E72C52D2045F300B4E944 /* FirebaseFirestore in Frameworks */,
@@ -91,6 +102,7 @@
 			children = (
 				964B4C262D02F41700ACE6DF /* Parceit */,
 				964B4C252D02F41700ACE6DF /* Products */,
+				96D4BD0C2D227CA10036FB98 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -120,6 +132,7 @@
 			);
 			fileSystemSynchronizedGroups = (
 				964B4C262D02F41700ACE6DF /* Parceit */,
+				96D4BD0C2D227CA10036FB98 /* Frameworks */,
 			);
 			name = Parceit;
 			packageProductDependencies = (
@@ -130,6 +143,8 @@
 				966B618F2D1D85A3004D51A3 /* FirebaseDatabase */,
 				966B61942D1D8DC4004D51A3 /* FirebaseAnalytics */,
 				967E72C42D2045F300B4E944 /* FirebaseFirestore */,
+				96D4BDC52D2315D00036FB98 /* Crypto */,
+				96D4BDC72D2315D00036FB98 /* _CryptoExtras */,
 			);
 			productName = Parceit;
 			productReference = 964B4C242D02F41700ACE6DF /* Parceit.app */;
@@ -162,6 +177,7 @@
 			packageReferences = (
 				964750E72D03286D00A9729C /* XCRemoteSwiftPackageReference "SnapKit" */,
 				966B61882D1D85A3004D51A3 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				96D4BDC42D2315D00036FB98 /* XCRemoteSwiftPackageReference "swift-crypto" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 964B4C252D02F41700ACE6DF /* Products */;
@@ -411,6 +427,14 @@
 				minimumVersion = 11.6.0;
 			};
 		};
+		96D4BDC42D2315D00036FB98 /* XCRemoteSwiftPackageReference "swift-crypto" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/apple/swift-crypto.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.10.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -448,6 +472,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 966B61882D1D85A3004D51A3 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseFirestore;
+		};
+		96D4BDC52D2315D00036FB98 /* Crypto */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 96D4BDC42D2315D00036FB98 /* XCRemoteSwiftPackageReference "swift-crypto" */;
+			productName = Crypto;
+		};
+		96D4BDC72D2315D00036FB98 /* _CryptoExtras */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 96D4BDC42D2315D00036FB98 /* XCRemoteSwiftPackageReference "swift-crypto" */;
+			productName = _CryptoExtras;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

@@ -10,10 +10,22 @@ import UIKit
 final class AlertManager {
     private static func showAlert(title: String, message: String?, viewController: UIViewController) {
         DispatchQueue.main.async {
-            let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "Dismiss", style: .default, handler: nil))
-            viewController.present(alert, animated: true, completion: nil)
+            // Ensure the view controller is ready to present an alert
+            if let presentedVC = viewController.presentedViewController, !(presentedVC is UIAlertController) {
+                // Wait for any presented modals (e.g., dismiss) to complete before showing the alert
+                presentedVC.dismiss(animated: true) {
+                    presentAlert(title: title, message: message, viewController: viewController)
+                }
+            } else {
+                presentAlert(title: title, message: message, viewController: viewController)
+            }
         }
+    }
+    
+    private static func presentAlert(title: String, message: String?, viewController: UIViewController) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Dismiss", style: .default, handler: nil))
+        viewController.present(alert, animated: true, completion: nil)
     }
 }
 
@@ -98,4 +110,11 @@ extension AlertManager {
         showAlert(title: "Error UnknownFetching User", message: "\(error.localizedDescription)", viewController: viewController)
     }
     
+}
+
+// MARK: - Tracking Errors
+extension AlertManager {
+    public static func showTrackingErrorAlert(on viewController: UIViewController, with message: String? = "Failed to fetch tracking info. Please try again.") {
+        showAlert(title: "Tracking Error", message: message, viewController: viewController)
+    }
 }

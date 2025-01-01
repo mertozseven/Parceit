@@ -87,6 +87,7 @@ class ForgotPasswordViewController: UIViewController {
     // MARK: - Private Methods
     private func configureView() {
         view.backgroundColor = .dynamicColor(light: .secondarySystemBackground, dark: .systemBackground)
+        view.addDismissKeyboardGesture()
         addViews()
         configureLayout()
         configureActions()

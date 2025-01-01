@@ -187,7 +187,6 @@ final class AddCodeViewController: UIViewController {
     @objc private func addButtonTapped() {
         guard let title = titleTextField.text, !title.isEmpty,
               let qrCodeString = qrCodeTextField.text, !qrCodeString.isEmpty else {
-            // Show alert for empty fields
             return
         }
         

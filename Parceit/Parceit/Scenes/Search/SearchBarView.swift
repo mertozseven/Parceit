@@ -18,7 +18,7 @@ final class SearchBarView: UIView {
         cornerRadius: 10
     )
     
-    private let searchTextField: UITextField = {
+    let searchTextField: UITextField = {
         let textField = UITextField()
         textField.backgroundColor = .clear
         textField.placeholder = "Enter your tracking code"
