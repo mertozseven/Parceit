@@ -12,6 +12,7 @@ extension UIView {
     // MARK: Keyboard dismiss method
     func addDismissKeyboardGesture() {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(UIView.endEditing))
+        tapGesture.cancelsTouchesInView = false
         addGestureRecognizer(tapGesture)
     }
     

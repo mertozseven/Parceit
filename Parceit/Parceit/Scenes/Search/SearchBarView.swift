@@ -12,6 +12,7 @@ final class SearchBarView: UIView {
     
     // MARK: - Properties
     var onQRCodeTapped: (() -> Void)?
+    var onSearchTapped: ((_ text: String) -> Void)?
     
     private let containerView = ContainerView(
         backgroundColor: .dynamicColor(light: .systemBackground, dark: .secondarySystemBackground),
@@ -25,6 +26,7 @@ final class SearchBarView: UIView {
         textField.textColor = .dynamicColor(light: UIColor(hex: "#0f2d0e")!, dark: .systemGreen)
         textField.leftViewMode = .always
         textField.rightViewMode = .always
+        textField.returnKeyType = .search
         textField.heightAnchor.constraint(equalToConstant: 44).isActive = true
         
         return textField
@@ -63,6 +65,7 @@ final class SearchBarView: UIView {
         configureTextField()
         addViews()
         configureLayout()
+        searchTextField.delegate = self
     }
     
     private func addViews() {
@@ -104,6 +107,16 @@ final class SearchBarView: UIView {
     // MARK: - Objective Methods
     @objc private func qrCodeTapped() {
         onQRCodeTapped?()
+    }
+}
+
+// MARK: - UITextFieldDelegate
+extension SearchBarView: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        guard let text = textField.text, !text.isEmpty else { return false }
+        textField.resignFirstResponder()
+        onSearchTapped?(text)
+        return true
     }
 }
 
