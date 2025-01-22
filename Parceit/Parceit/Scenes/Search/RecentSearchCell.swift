@@ -84,7 +84,3 @@ class RecentSearchCell: UITableViewCell {
         }
     }
 }
-
-#Preview {
-    RecentSearchCell()
-}

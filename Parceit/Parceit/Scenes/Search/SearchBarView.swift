@@ -119,7 +119,3 @@ extension SearchBarView: UITextFieldDelegate {
         return true
     }
 }
-
-#Preview {
-    SearchBarView()
-}

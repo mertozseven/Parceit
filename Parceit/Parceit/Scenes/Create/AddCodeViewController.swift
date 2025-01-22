@@ -199,7 +199,3 @@ final class AddCodeViewController: UIViewController {
         dismiss(animated: true)
     }
 }
-
-#Preview {
-    AddCodeViewController()
-}

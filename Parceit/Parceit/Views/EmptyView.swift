@@ -97,7 +97,3 @@ final class EmptyView: UIView {
         }
     }
 }
-
-#Preview {
-    EmptyView()
-}

@@ -247,7 +247,3 @@ final class SplashViewController: UIViewController {
         dismiss(animated: true)
     }
 }
-
-#Preview {
-    SplashViewController()
-}

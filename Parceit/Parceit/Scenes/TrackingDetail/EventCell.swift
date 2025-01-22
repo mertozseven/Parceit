@@ -154,32 +154,3 @@ class EventCell: UITableViewCell {
         }
     }
 }
-
-#Preview {
-    let cell = EventCell(style: .default, reuseIdentifier: EventCell.identifier)
-    cell.configure(
-        with: Event(
-            eventId: "1",
-            trackingNumber: "1ZX0438X6800711041",
-            eventTrackingNumber: "1ZX0438X6800711041",
-            status: "DELIVERED",
-            occurrenceDatetime: "2024-11-01T12:38:00",
-            order: nil,
-            datetime: "2024-11-01T12:38:00.000Z",
-            hasNoTime: false,
-            utcOffset: nil,
-            location: "KOCAELI, TR",
-            sourceCode: "ups-tracking",
-            courierCode: "ups",
-            statusCode: "delivery_delivered",
-            statusCategory: "delivery",
-            statusMilestone: "delivered"
-        )
-    )
-    
-    let containerView = UIView(frame: CGRect(x: UIScreen.main.bounds.width/2, y: UIScreen.main.bounds.height/2, width: 375, height: 300))
-    containerView.backgroundColor = .systemBackground
-    containerView.addSubview(cell)
-    cell.frame = containerView.bounds
-    return containerView
-}

@@ -32,7 +32,7 @@ final class API {
     }()
     
     // MARK: - Properties
-    private let apiKey = "apik_z4UZ7MFR49g9rpbDuZApLuTWUJltVA"
+    private let apiKey = "apik_OG16FiJxDk1jKcJQ4WJW2zeVnLTemT"
     private let baseURL = "https://api.ship24.com/" 
     
     var service: NetworkService

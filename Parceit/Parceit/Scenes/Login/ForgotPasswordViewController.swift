@@ -156,7 +156,3 @@ class ForgotPasswordViewController: UIViewController {
     }
 
 }
-
-#Preview {
-    ForgotPasswordViewController()
-}
